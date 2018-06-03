@@ -79,9 +79,9 @@ void	mod_chek_unsig(char c, va_list *argp, t_flags *flags)
 	if ((c == 'u') && flags->mod == 0)
 		flager_for_unsig(va_arg(*argp, unsigned int), flags);
 	else if ((c == 'u') && flags->mod == 1)
-		flager_for_unsig((char)va_arg(*argp, unsigned int), flags);
+		flager_for_unsig((unsigned char)va_arg(*argp, unsigned), flags);
 	else if ((c == 'u') && flags->mod == 2)
-		flager_for_unsig((short)va_arg(*argp, unsigned int), flags);
+		flager_for_unsig((unsigned short)va_arg(*argp, unsigned int), flags);
 	else if (((c == 'u' || c == 'U') && flags->mod == 3) || (c == 'U' && flags->mod < 3))
 		flager_for_unsig(va_arg(*argp, unsigned long), flags);
 	else if ((c == 'u' || c == 'U') && flags->mod == 4)

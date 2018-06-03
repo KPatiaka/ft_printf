@@ -58,7 +58,7 @@ void	print_di(long long di, t_flags *flags, int len, int min)
 	if ((flags->minus == 0) && \
 		(flags->width >= fullnum || flags->precision > len))
 	{
-		flags->zero = (flags->precision > len) ? 0 : flags->zero;
+		flags->zero = (flags->precision >= len) ? 0 : flags->zero;
 		put_width(flags, fullnum, min);
 		put_precision(flags, len, min);
 		put_n(di, flags);
@@ -77,8 +77,9 @@ void	put_width(t_flags *flags, int fullnum, int min)
 	int i;
 
 	i = (flags->plus == 1 && min != 1) ? 1 : 0;
-	i = (flags->space == 1 && flags->plus != 1 && min != 1) ? \
-	(i + write(1, " ", 1) + (++flags->total - flags->total)) : i;
+	i = (flags->space == 1 && flags->plus != 1 && min != 1 && \
+		flags->width > flags->precision) ? (i + write(1, " ", 1) \
+		+ (++flags->total - flags->total)) : i;
 	i += (flags->width > flags->precision && flags->zero != 1 \
 		&& flags->space == 1 && flags->plus != 1 && min != 1) ? 1 : 0;
 	i += (flags->minus == 1 && flags->space == 1 \

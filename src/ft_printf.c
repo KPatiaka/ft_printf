@@ -44,7 +44,7 @@ int		ft_printf(char *str, ...)
 			if (*str == 's' || *str == 'c' || *str == 'u' || *str == 'U' \
 				|| *str == 'd' || *str == 'i' || *str == 'D' || *str == 'o' \
 				|| *str == 'O' || *str == 'x' || *str == 'X' || *str == '%' \
-				|| *str == 'C' || *str == 'S' || *str == 'p' || *str == 'b')
+				|| *str == 'C' || *str == 'S' || *str == 'p' || *str == 'b' || *str == 'n')
 				print_befor_pars(&argp, &flags, *str);
 			else
 			{
@@ -86,6 +86,8 @@ void	print_befor_pars(va_list *argp, t_flags *flags, char str)
 		flager_point(va_arg(*argp, unsigned long long), flags);
 	else if (str == 'b')
 		put_base(va_arg(*argp, unsigned), str, flags);
+	else if (str == 'n')
+		flags->total -= (put_n(flags->total, flags));
 }
 
 void	print_after_pars(va_list *argp, t_flags *flags, char str)
