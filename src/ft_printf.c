@@ -87,7 +87,7 @@ void	print_befor_pars(va_list *argp, t_flags *flags, char str)
 	else if (str == 'b')
 		put_base(va_arg(*argp, unsigned), str, flags);
 	else if (str == 'n')
-		flags->total -= (put_n(flags->total, flags));
+		put_n(flags->total, flags);
 }
 
 void	print_after_pars(va_list *argp, t_flags *flags, char str)
