@@ -60,6 +60,11 @@ int		ft_printf(char *str, ...)
 	return (flags.total);
 }
 
+void	n_bonus(int *n, t_flags *flags)
+{
+	*n = flags->total;
+}
+
 void	print_befor_pars(va_list *argp, t_flags *flags, char str)
 {
 	if (str == 's')
@@ -87,7 +92,7 @@ void	print_befor_pars(va_list *argp, t_flags *flags, char str)
 	else if (str == 'b')
 		put_base(va_arg(*argp, unsigned), str, flags);
 	else if (str == 'n')
-		put_n(flags->total, flags);
+		n_bonus(va_arg(*argp, int *), flags);
 }
 
 void	print_after_pars(va_list *argp, t_flags *flags, char str)
