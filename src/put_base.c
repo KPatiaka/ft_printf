@@ -82,7 +82,7 @@ void	flager_for_base(unsigned long long num, char type, t_flags *flags)
 			put_base(num, type, flags);
 		}
 	flags->zero = ((flags->sharp == 1) && flags->precision > len) ? 0 : flags->zero;
-	if ((flags->minus == 0) && (flags->width > len || flags->precision > len))
+	if ((flags->minus == 0) && (flags->width >= len || flags->precision >= len))
 	{
 		if (flags->zero == 1 && flags->sharp == 1 && flags->precision < len)
 			put_sharp(type, flags);
