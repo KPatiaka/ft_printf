@@ -30,7 +30,13 @@ void	mod_chek(char c, va_list *argp, t_flags *flags)
 		flager_for_di(va_arg(*argp, intmax_t), flags);
 	else if ((c == 'd' || c == 'i') && flags->mod == 6)
 		flager_for_di(va_arg(*argp, size_t), flags);
-	else if ((c == 'o' || c == 'O' || c == 'x' || c == 'X') && (flags->mod == 2 || flags->mod == 1))
+	mod_chek_base(c, argp, flags);
+}
+
+void	mod_chek_base(char c, va_list *argp, t_flags *flags)
+{
+	if ((c == 'o' || c == 'O' || c == 'x' || c == 'X') \
+		&& (flags->mod == 2 || flags->mod == 1))
 		flager_for_base(va_arg(*argp, unsigned), c, flags);
 	else if ((c == 'o' || c == 'O' || c == 'x' || c == 'X') && flags->mod == 3)
 		flager_for_base(va_arg(*argp, unsigned long), c, flags);
@@ -82,7 +88,8 @@ void	mod_chek_unsig(char c, va_list *argp, t_flags *flags)
 		flager_for_unsig((unsigned char)va_arg(*argp, unsigned), flags);
 	else if ((c == 'u') && flags->mod == 2)
 		flager_for_unsig((unsigned short)va_arg(*argp, unsigned int), flags);
-	else if (((c == 'u' || c == 'U') && flags->mod == 3) || (c == 'U' && flags->mod < 3))
+	else if (((c == 'u' || c == 'U') && flags->mod == 3) \
+		|| (c == 'U' && flags->mod < 3))
 		flager_for_unsig(va_arg(*argp, unsigned long), flags);
 	else if ((c == 'u' || c == 'U') && flags->mod == 4)
 		flager_for_unsig(va_arg(*argp, unsigned long long), flags);

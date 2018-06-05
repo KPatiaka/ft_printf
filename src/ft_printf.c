@@ -24,6 +24,8 @@ void	cleanflags(t_flags *flags)
 	flags->mod = 0;
 	flags->dot = 0;
 	flags->binar = 0;
+	flags->color = 0;
+	flags->fullnum = 0;
 }
 
 int		ft_printf(char *str, ...)
@@ -38,31 +40,21 @@ int		ft_printf(char *str, ...)
 		cleanflags(&flags);
 		if (*str == '%')
 		{
-			str++;
-			if (*str == '\0')
+			if (*(++str) == '\0')
 				return (0);
-			if (*str == 's' || *str == 'c' || *str == 'u' || *str == 'U' \
-				|| *str == 'd' || *str == 'i' || *str == 'D' || *str == 'o' \
-				|| *str == 'O' || *str == 'x' || *str == 'X' || *str == '%' \
-				|| *str == 'C' || *str == 'S' || *str == 'p' || *str == 'b' || *str == 'n')
+			if (A(*str) || B(*str) || C(*str) || D(*str))
 				print_befor_pars(&argp, &flags, *str);
 			else
-			{
 				parse_flags(&str, &argp, &flags);
-				print_after_pars(&argp, &flags, *str);
-			}
 		}
 		else
 			flags.total += write(1, str, 1);
 		str += (str) ? 1 : 0;
+		if (flags.color > 0)
+			write(1, "\033[0m", 4);
 	}
 	va_end(argp);
 	return (flags.total);
-}
-
-void	n_bonus(int *n, t_flags *flags)
-{
-	*n = flags->total;
 }
 
 void	print_befor_pars(va_list *argp, t_flags *flags, char str)
@@ -81,7 +73,12 @@ void	print_befor_pars(va_list *argp, t_flags *flags, char str)
 		put_n(va_arg(*argp, long), flags);
 	else if (str == 'o' || str == 'O' || str == 'x' || str == 'X')
 		put_base(va_arg(*argp, unsigned), str, flags);
-	else if (str == '%')
+	print_befor_pars_two(argp, flags, str);
+}
+
+void	print_befor_pars_two(va_list *argp, t_flags *flags, char str)
+{
+	if (str == '%')
 		flags->total += write(1, "%", 1);
 	else if (str == 'C')
 		flags->total += put_unic(va_arg(*argp, wchar_t));

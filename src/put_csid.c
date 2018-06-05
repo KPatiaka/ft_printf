@@ -14,7 +14,7 @@
 
 void	put_c(char c, t_flags *flags)
 {
-		flags->total += write(1, &c, 1);
+	flags->total += write(1, &c, 1);
 }
 
 int		put_s(char *str, t_flags *flags)
@@ -24,7 +24,8 @@ int		put_s(char *str, t_flags *flags)
 	i = 0;
 	if (str == NULL)
 	{
-		i = (flags->precision > 0 && flags->precision < 7) ? flags->precision : 6;
+		i = (flags->precision > 0 && flags->precision < 7) \
+		? flags->precision : 6;
 		flags->total += write(1, "(null)", i);
 		return (i);
 	}
@@ -34,7 +35,7 @@ int		put_s(char *str, t_flags *flags)
 	return (i);
 }
 
-static void		recursive_put_n(unsigned long long num, t_flags *flags)
+void	recursive_put_n(unsigned long long num, t_flags *flags)
 {
 	if (num > 9)
 		recursive_put_n(num / 10, flags);
@@ -44,10 +45,15 @@ static void		recursive_put_n(unsigned long long num, t_flags *flags)
 
 void	put_n(long long n, t_flags *flags)
 {
-	unsigned long long num;
+	unsigned long long	num;
 
 	if (n < 0)
 		flags->total += write(1, "-", 1);
 	num = (n < 0) ? -n : n;
 	recursive_put_n(num, flags);
+}
+
+void	n_bonus(int *n, t_flags *flags)
+{
+	*n = flags->total;
 }

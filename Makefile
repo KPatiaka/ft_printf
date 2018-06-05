@@ -23,6 +23,8 @@ SRC_FILES	=	ft_printf.c \
 				chek_my_mod.c \
 				unsignum.c \
 				flager_point.c \
+				colors.c \
+				flager_for_base_two.c \
 
 FLAGS		=	-Wall -Wextra -Werror
 CC			=	gcc

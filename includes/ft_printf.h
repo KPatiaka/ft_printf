@@ -18,6 +18,10 @@
 # include <locale.h>
 # include <stdlib.h>
 # include <stdio.h>
+# define A(x) x == 's' || x == 'c' || x == 'u' || x == 'U' || x == 'd'
+# define B(x) x == 'i' || x == 'D' || x == 'o' || x == 'O' || x == 'x'
+# define C(x) x == 'X' || x == '%' || x == 'C' || x == 'S' || x == 'p'
+# define D(x) x == 'b' || x == 'n'
 
 typedef struct		s_flags
 {
@@ -32,6 +36,8 @@ typedef struct		s_flags
 	int				mod;
 	int				dot;
 	int				binar;
+	int				color;
+	int				fullnum;
 }					t_flags;
 
 int					ft_printf(char *str, ...);
@@ -71,5 +77,16 @@ int					base_len(unsigned long long num, char type);
 void				print_di(long long di, t_flags *flags, int len, int min);
 void				print_befor_pars(va_list *argp, t_flags *flags, char str);
 void				print_after_pars(va_list *argp, t_flags *flags, char str);
+void				mod_chek_base(char c, va_list *argp, t_flags *flags);
+void				colors(va_list *argp, t_flags *flags, char *str);
+void				flager_for_base_min(unsigned long long num, char type, \
+					t_flags *flags, int len);
+void				flager_for_base_nomin(unsigned long long num, char type, \
+					t_flags *flags, int len);
+void				flager_for_base_two(unsigned long long num, char type, \
+					t_flags *flags, int len);
+void				n_bonus(int *n, t_flags *flags);
+void				print_befor_pars_two(va_list *argp, t_flags *flags, \
+					char str);
 
 #endif

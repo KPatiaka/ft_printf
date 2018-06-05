@@ -60,52 +60,26 @@ int		base_len(unsigned long long num, char type)
 void	flager_for_base(unsigned long long num, char type, t_flags *flags)
 {
 	int		len;
-	int		fullnum;
 
 	len = base_len(num, type);
-	fullnum = flags->precision > len ? flags->precision : len;
-	if (num == 0 && flags->precision == 0 && flags->dot == 1 && flags->sharp == 1 && (type == 'o' || type == 'O'))
+	flags->fullnum = flags->precision > len ? flags->precision : len;
+	if (num == 0 && flags->precision == 0 && flags->dot == 1 \
+		&& flags->sharp == 1 && (type == 'o' || type == 'O'))
 		flags->dot++;
 	flags->sharp = num == 0 ? 0 : flags->sharp;
 	if (num == 0 && flags->precision == 0 && flags->dot == 1)
-		{
-			put_width_unsig(flags, (fullnum - 1));
-			return ;
-		}
+	{
+		put_width_unsig(flags, (flags->fullnum - 1));
+		return ;
+	}
 	if (flags->sharp == 1 && num != 0)
-		fullnum += (type == 'x' || type == 'X') ? 2 : 1;
-	if ((flags->width == -1 && flags->precision == 0) || (flags->width < len \
-		&& flags->precision < len))
-		{
-			if (flags->sharp == 1 && num != 0)
-				put_sharp(type, flags);
-			put_base(num, type, flags);
-		}
-	flags->zero = ((flags->sharp == 1) && flags->precision > len) ? 0 : flags->zero;
+		flags->fullnum += (type == 'x' || type == 'X') ? 2 : 1;
+	flager_for_base_two(num, type, flags, len);
 	if ((flags->minus == 0) && (flags->width >= len || flags->precision >= len))
-	{
-		if (flags->zero == 1 && flags->sharp == 1 && flags->precision < len)
-			put_sharp(type, flags);
-		(flags->sharp == 1 && flags->precision > len && \
-			(type == 'o' || type == 'O')) ? fullnum-- : 0;
-		put_width_unsig(flags, fullnum);
-		if (flags->sharp == 1 && flags->precision > len)
-			(type == 'o' || type == 'O') ? 0 : put_sharp(type, flags);
-		put_precision_unsig(flags, len);
-		if (flags->zero == 0 && flags->sharp == 1 && flags->precision < len)
-			put_sharp(type, flags);
-		put_base(num, type, flags);
-	}
-	else if ((flags->minus == 1) && (flags->width > len || flags->precision > len))
-	{
-		if (flags->sharp == 1 && flags->precision > len)
-			(type == 'o' || type == 'O') ? fullnum-- : put_sharp(type, flags);
-		put_precision_unsig(flags, len);
-		if (flags->sharp == 1 && flags->precision < len)
-			put_sharp(type, flags);
-		put_base(num, type, flags);
-		put_width_unsig(flags, fullnum);
-	}
+		flager_for_base_min(num, type, flags, len);
+	else if ((flags->minus == 1) && (flags->width > len \
+		|| flags->precision > len))
+		flager_for_base_nomin(num, type, flags, len);
 }
 
 void	put_sharp(char type, t_flags *flags)

@@ -34,7 +34,7 @@ void	flager_for_unsig(unsigned long long num, t_flags *flags)
 {
 	int		len;
 	int		fullnum;
-	
+
 	len = num_unsig_len(num);
 	fullnum = flags->precision > len ? flags->precision : len;
 	if ((flags->width == -1 && flags->precision == 0) || \
@@ -46,7 +46,8 @@ void	flager_for_unsig(unsigned long long num, t_flags *flags)
 		put_precision_unsig(flags, len);
 		unsignum(num, flags);
 	}
-	else if ((flags->minus == 1) && (flags->width > len || flags->precision > len))
+	else if ((flags->minus == 1) && (flags->width > len \
+		|| flags->precision > len))
 	{
 		put_precision_unsig(flags, len);
 		unsignum(num, flags);
@@ -60,11 +61,11 @@ void	put_width_unsig(t_flags *flags, int fullnum)
 
 	i = 0;
 	while ((fullnum + i) < flags->width)
-		{
-			flags->total += (flags->zero == 1 && flags->minus == 0) \
-			? write(1, "0", 1) : write(1, " ", 1);
-			i++;
-		}
+	{
+		flags->total += (flags->zero == 1 && flags->minus == 0) \
+		? write(1, "0", 1) : write(1, " ", 1);
+		i++;
+	}
 }
 
 void	put_precision_unsig(t_flags *flags, int len)
